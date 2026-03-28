@@ -17,6 +17,8 @@ services:
       interval: 30s
       timeout: 20s
       retries: 3
+    networks:
+      - milvus
 
   minio:
     container_name: milvus-minio
@@ -24,9 +26,6 @@ services:
     environment:
       MINIO_ACCESS_KEY: minioadmin
       MINIO_SECRET_KEY: minioadmin
-    # ports:
-    #  - "9001:9001"
-    #  - "9000:9000"
     volumes:
       - ${DOCKER_VOLUME_DIRECTORY:-.}/volumes/minio:/minio_data
     command: minio server /minio_data --console-address ":9001"
@@ -35,17 +34,18 @@ services:
       interval: 30s
       timeout: 20s
       retries: 3
+    networks:
+      - milvus
 
   standalone:
     container_name: milvus-standalone
-    image: milvusdb/milvus:v2.6.11
+    image: milvusdb/milvus:v2.4.15
     command: ["milvus", "run", "standalone"]
     security_opt:
     - seccomp:unconfined
     environment:
       ETCD_ENDPOINTS: etcd:2379
       MINIO_ADDRESS: minio:9000
-      MQ_TYPE: woodpecker
       common.security.authorizationEnabled: "true"
     volumes:
       - ${DOCKER_VOLUME_DIRECTORY:-.}/volumes/milvus:/var/lib/milvus
