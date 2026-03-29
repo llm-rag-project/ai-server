@@ -14,17 +14,31 @@ git clone https://github.com/langgenius/dify.git
 
 ---
 
-# 2. Dify 디렉토리 이동
+# 2. 버전 체크아웃 (필수)
 
-클론한 Dify 저장소의 docker 폴더로 이동합니다.
+> **반드시 v1.13.1 이상으로 체크아웃해야 합니다.**
+>
+> v1.13.0에는 지식검색 노드에서 metadata filter를 variable로 설정해도 결과가 `[]`로 반환되는 버그가 있습니다.
+> 이 버그는 v1.13.1에서 수정되었습니다.
 
 ```bash
-cd dify/docker
+cd dify
+git checkout 1.13.1
 ```
 
 ---
 
-# 3. 환경 변수 파일 준비
+# 3. Dify 디렉토리 이동
+
+클론한 Dify 저장소의 docker 폴더로 이동합니다.
+
+```bash
+cd docker
+```
+
+---
+
+# 4. 환경 변수 파일 준비
 
 `.env.example` 파일을 `.env`로 복사합니다.
 
@@ -43,9 +57,15 @@ EXPOSE_NGINX_SSL_PORT=443
 
 이 설정은 Dify가 외부에 노출되는 포트를 의미합니다.
 
+또한 Redis 연결 안정성을 위해 아래 항목도 추가합니다.
+
+```env
+REDIS_MAX_CONNECTIONS=10
+```
+
 ---
 
-# 4. Docker Compose 실행
+# 5. Docker Compose 실행
 
 다음 명령어로 Dify 서비스를 실행합니다.
 
@@ -66,7 +86,7 @@ docker compose up -d
 
 ---
 
-# 5. 실행 확인
+# 6. 실행 확인
 
 컨테이너가 정상적으로 실행되었는지 확인합니다.
 
@@ -78,7 +98,7 @@ docker ps
 
 ---
 
-# 6. Dify 접속
+# 7. Dify 접속
 
 브라우저에서 다음 주소로 접속합니다.
 
@@ -110,17 +130,18 @@ http://localhost:8001
 
 ---
 
-# 7. 정리
+# 8. 정리
 
 Dify 구축 과정 요약
 
 ```text
 1. Dify GitHub 저장소 clone
-2. dify/docker 디렉토리 이동
-3. .env.example → .env 복사
-4. docker compose up -d 실행
-5. docker ps로 실행 상태 확인
-6. 브라우저에서 localhost 접속
+2. git checkout 1.13.1 (v1.13.0 버그 회피)
+3. dify/docker 디렉토리 이동
+4. .env.example → .env 복사 후 REDIS_MAX_CONNECTIONS=10 추가
+5. docker compose up -d 실행
+6. docker ps로 실행 상태 확인
+7. 브라우저에서 localhost 접속
 ```
 
 이 과정을 통해 개발 서버에 **Self-hosted Dify 환경**을 구축할 수 있습니다.

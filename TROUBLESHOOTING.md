@@ -107,3 +107,32 @@ Milvus가 꺼진 상태에서 인덱싱 시도
 1. Milvus 정상 기동 확인 (위 2번 참고)
 2. Dify > Knowledge > 문서 > "새시도" 버튼 클릭
 3. 새시도 실패 시 문서 삭제 후 재업로드
+
+---
+
+## 6. Dify metadata filter variable 버그
+
+**증상**
+- 지식검색 노드에서 metadata filter를 variable로 설정해도 `result: []`로 반환
+- metadata filter를 고정값으로 설정하면 정상 작동
+
+**원인**
+Dify v1.13.0 버그
+
+**해결**
+v1.13.1로 업그레이드 후 `.env`에 `REDIS_MAX_CONNECTIONS=10` 추가
+
+```bash
+cd dify
+git fetch --tags
+git checkout 1.13.1
+cd docker
+docker compose down
+docker compose up -d
+```
+
+`.env`에 아래 항목 추가:
+
+```env
+REDIS_MAX_CONNECTIONS=10
+```
