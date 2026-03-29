@@ -51,7 +51,8 @@ ai-server
 │       └ docker-compose.yml
 │
 ├ .gitignore
-└ README.md
+├ README.md
+└ TROUBLESHOOTING.md
 ```
 
 ---
