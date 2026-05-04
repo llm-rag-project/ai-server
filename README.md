@@ -40,19 +40,27 @@ LLM / Retrieval
 
 ```text
 ai-server
+├── docs
+│   ├── dify-setup.md
+│   ├── milvus.md
+│   └── architecture.md
 │
-├ docs
-│   ├ dify-setup.md
-│   ├ milvus.md
-│   └ architecture.md
+├── infra
+│   └── milvus
+│       └── docker-compose.yml
 │
-├ infra
-│   └ milvus
-│       └ docker-compose.yml
+├── workflows/                  ← 새로 추가
+│   ├── importance_scoring.yml
+│   ├── summary_ko.yml
+│   ├── rag_chat.yml
+│   └── screenshots/
+│       ├── importance_scoring-whole-workflow.png
+│       ├── rag_chat-whole-workflow.png
+│       └── summary_ko-whole-workflow.png
 │
-├ .gitignore
-├ README.md
-└ TROUBLESHOOTING.md
+├── .gitignore
+├── README.md
+└── TROUBLESHOOTING.md
 ```
 
 ---
