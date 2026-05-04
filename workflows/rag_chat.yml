@@ -1,0 +1,612 @@
+app:
+  description: ''
+  icon: 🤖
+  icon_background: '#FFEAD5'
+  icon_type: emoji
+  mode: advanced-chat
+  name: rag_chat
+  use_icon_as_answer_icon: false
+dependencies:
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: langgenius/openai:0.3.3@cfb7804d9acf3e0f24b33e97e22c2600249c471f33428efa33597959b513ad2d
+    version: null
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: langgenius/gemini:0.7.20@de0063a630a6d1b2c025fb84f3462ba5151fb60618309cd595c3f4711b1df847
+    version: null
+kind: app
+version: 0.6.0
+workflow:
+  conversation_variables: []
+  environment_variables: []
+  features:
+    file_upload:
+      allowed_file_extensions:
+      - .JPG
+      - .JPEG
+      - .PNG
+      - .GIF
+      - .WEBP
+      - .SVG
+      allowed_file_types:
+      - image
+      allowed_file_upload_methods:
+      - local_file
+      - remote_url
+      enabled: false
+      fileUploadConfig:
+        attachment_image_file_size_limit: 2
+        audio_file_size_limit: 50
+        batch_count_limit: 5
+        file_size_limit: 15
+        file_upload_limit: 20
+        image_file_batch_limit: 10
+        image_file_size_limit: 10
+        single_chunk_attachment_limit: 10
+        video_file_size_limit: 100
+        workflow_file_upload_limit: 10
+      image:
+        enabled: false
+        number_limits: 3
+        transfer_methods:
+        - local_file
+        - remote_url
+      number_limits: 3
+    opening_statement: ''
+    retriever_resource:
+      enabled: true
+    sensitive_word_avoidance:
+      enabled: false
+    speech_to_text:
+      enabled: false
+    suggested_questions: []
+    suggested_questions_after_answer:
+      enabled: false
+    text_to_speech:
+      enabled: false
+      language: ''
+      voice: ''
+  graph:
+    edges:
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: start
+        targetType: if-else
+      id: 1774698064048-source-1774698110395-target
+      selected: false
+      source: '1774698064048'
+      sourceHandle: source
+      target: '1774698110395'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: if-else
+        targetType: knowledge-retrieval
+      id: 1774698110395-true-1774698256521-target
+      source: '1774698110395'
+      sourceHandle: 'true'
+      target: '1774698256521'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: knowledge-retrieval
+        targetType: llm
+      id: 1774698256521-source-1774701493013-target
+      source: '1774698256521'
+      sourceHandle: source
+      target: '1774701493013'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: llm
+        targetType: answer
+      id: 1774701493013-source-1774703757574-target
+      source: '1774701493013'
+      sourceHandle: source
+      target: '1774703757574'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: llm
+        targetType: answer
+      id: 1774701658947-source-1774703765208-target
+      source: '1774701658947'
+      sourceHandle: source
+      target: '1774703765208'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: if-else
+        targetType: question-classifier
+      id: 1774698110395-false-1775823228548-target
+      source: '1774698110395'
+      sourceHandle: 'false'
+      target: '1775823228548'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: question-classifier
+        targetType: knowledge-retrieval
+      id: 1775823228548-1-1775823595011-target
+      source: '1775823228548'
+      sourceHandle: '1'
+      target: '1775823595011'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: knowledge-retrieval
+        targetType: llm
+      id: 1775823595011-source-1774701658947-target
+      source: '1775823595011'
+      sourceHandle: source
+      target: '1774701658947'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: question-classifier
+        targetType: llm
+      id: 1775823228548-2-1775823749881-target
+      source: '1775823228548'
+      sourceHandle: '2'
+      target: '1775823749881'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: llm
+        targetType: answer
+      id: 1775823749881-source-1775823756141-target
+      source: '1775823749881'
+      sourceHandle: source
+      target: '1775823756141'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    nodes:
+    - data:
+        selected: false
+        title: 시작
+        type: start
+        variables:
+        - default: ''
+          hint: ''
+          label: user_id
+          options: []
+          placeholder: ''
+          required: true
+          type: number
+          variable: user_id
+        - default: ''
+          hint: ''
+          label: article_id
+          options: []
+          placeholder: ''
+          required: false
+          type: number
+          variable: article_id
+      height: 135
+      id: '1774698064048'
+      position:
+        x: 70.90570060093762
+        y: 261
+      positionAbsolute:
+        x: 70.90570060093762
+        y: 261
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        cases:
+        - case_id: 'true'
+          conditions:
+          - comparison_operator: not empty
+            id: 86678690-6eb0-4802-8af6-19a5f27e3ff9
+            value: ''
+            varType: number
+            variable_selector:
+            - '1774698064048'
+            - article_id
+          id: 'true'
+          logical_operator: and
+        selected: false
+        title: IF/ELSE
+        type: if-else
+      height: 124
+      id: '1774698110395'
+      position:
+        x: 380
+        y: 282
+      positionAbsolute:
+        x: 380
+        y: 282
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        dataset_ids:
+        - fDDTReOVyoWQXFuW7CDyHOK6c38S28xeWm4j/VTEln96jflhdhmZCliuJTFrTQb4
+        metadata_filtering_conditions:
+          conditions:
+          - comparison_operator: '='
+            id: be3fd6e0-eba9-41aa-bef6-f8c336f6efdc
+            metadata_id: 3d02044f-35ed-422e-a0ae-747d2e6deb64
+            name: article_id
+            value: '{{#1774698064048.article_id#}}'
+          logical_operator: and
+        metadata_filtering_mode: manual
+        metadata_model_config:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: gpt-4o-mini
+          provider: langgenius/openai/openai
+        multiple_retrieval_config:
+          reranking_enable: false
+          reranking_mode: weighted_score
+          score_threshold: null
+          top_k: 4
+          weights:
+            keyword_setting:
+              keyword_weight: 0
+            vector_setting:
+              embedding_model_name: text-embedding-3-small
+              embedding_provider_name: langgenius/openai/openai
+              vector_weight: 1
+            weight_type: customized
+        query_attachment_selector: []
+        query_variable_selector:
+        - sys
+        - query
+        retrieval_mode: multiple
+        selected: false
+        title: 지식 검색
+        type: knowledge-retrieval
+      height: 90
+      id: '1774698256521'
+      position:
+        x: 700.1885987981248
+        y: 222.04421957119837
+      positionAbsolute:
+        x: 700.1885987981248
+        y: 222.04421957119837
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        context:
+          enabled: true
+          variable_selector:
+          - '1774698256521'
+          - result
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: gemini-2.5-flash
+          provider: langgenius/gemini/google
+        prompt_template:
+        - id: 4f5ef419-f59a-4d48-bf04-ce5c4e20cb75
+          role: system
+          text: '당신은 뉴스 기사 기반 질의응답 도우미입니다.
+
+
+            규칙:
+
+            1. 반드시 제공된 컨텍스트를 근거로 답변하세요.
+
+            2. 컨텍스트에 없는 내용은 추측하지 마세요.
+
+            3. 사용자가 특정 기사에 대해 묻는 상황이므로, 검색된 기사 범위 내에서만 답변하세요.
+
+            4. 답변은 한국어로 작성하세요.
+
+            5. 깊게 파고들지 말고 핵심부터 명확하게 설명하세요.
+
+            6. 정보가 부족하면 모른다고 솔직히 말하세요.'
+        - id: 023b9843-6822-41dd-be1b-ac51d88e5d52
+          role: user
+          text: '사용자 질문: {{#sys.query#}}/
+
+
+            검색 결과: {{#context#}}
+
+
+            위 검색 결과만 바탕으로 답변하세요./'
+        selected: false
+        title: LLM
+        type: llm
+        vision:
+          enabled: false
+      height: 88
+      id: '1774701493013'
+      position:
+        x: 1047.6600957934368
+        y: 181.96270661031372
+      positionAbsolute:
+        x: 1047.6600957934368
+        y: 181.96270661031372
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        context:
+          enabled: true
+          variable_selector:
+          - '1775823595011'
+          - result
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: gemini-2.5-flash
+          provider: langgenius/gemini/google
+        prompt_template:
+        - id: 061824fb-8d18-4753-9518-31cb6cb51387
+          role: system
+          text: '당신은 뉴스 기반 질의응답 도우미입니다.
+
+
+            규칙:
+
+            1. 반드시 제공된 컨텍스트를 근거로 답변하세요.
+
+            2. 컨텍스트에 없는 내용은 추측하지 마세요.
+
+            3. 여러 기사에서 관련 내용을 종합해서 답변하세요.
+
+            4. 답변은 한국어로 작성하세요.
+
+            5. 깊게 파고들지 말고 핵심부터 명확하게 설명하세요.
+
+            6. 정보가 부족하면 모른다고 솔직히 말하세요.'
+        - id: 3827fb15-a16d-4f16-a04f-ce94597a6b72
+          role: user
+          text: '사용자 질문: {{#sys.query#}}
+
+
+            검색 결과: {{#context#}}
+
+
+            위 검색 결과만 바탕으로 답변하세요.'
+        selected: false
+        title: LLM 2
+        type: llm
+        vision:
+          enabled: false
+      height: 88
+      id: '1774701658947'
+      position:
+        x: 1318.178730078037
+        y: 367.78789720667294
+      positionAbsolute:
+        x: 1318.178730078037
+        y: 367.78789720667294
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        answer: '{{#1774701493013.text#}}'
+        selected: false
+        title: 답변
+        type: answer
+        variables: []
+      height: 102
+      id: '1774703757574'
+      position:
+        x: 1355.7229620594787
+        y: 181.96270661031372
+      positionAbsolute:
+        x: 1355.7229620594787
+        y: 181.96270661031372
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        answer: '{{#1774701658947.text#}}'
+        selected: false
+        title: 답변 2
+        type: answer
+        variables: []
+      height: 102
+      id: '1774703765208'
+      position:
+        x: 1609.344028554264
+        y: 367.78789720667294
+      positionAbsolute:
+        x: 1609.344028554264
+        y: 367.78789720667294
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        classes:
+        - id: '1'
+          name: 뉴스, 기사, 최신 소식, 특정 사건이나 이슈에 대해 묻는 질문
+        - id: '2'
+          name: 인사(hello, hi, 안녕 등), 잡담, 뉴스와 무관한 일반적인 대화
+        instruction: '사용자의 질문을 아래 두 클래스 중 하나로 분류하세요.
+
+
+          클래스 1 (뉴스 질문): 뉴스, 기사, 최신 소식, 특정 사건이나 이슈에 대해 묻는 질문
+
+          클래스 2 (일반 대화): 인사, 잡담, 뉴스와 무관한 일반적인 대화
+
+
+          반드시 JSON 형식으로 출력하세요.'
+        instructions: ''
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: gemini-2.5-flash
+          provider: langgenius/gemini/google
+        query_variable_selector:
+        - '1774698064048'
+        - sys.query
+        selected: false
+        title: 질문 분류기
+        type: question-classifier
+        vision:
+          enabled: false
+      height: 170
+      id: '1775823228548'
+      position:
+        x: 708.0277717785882
+        y: 360.8626837301496
+      positionAbsolute:
+        x: 708.0277717785882
+        y: 360.8626837301496
+      selected: true
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        dataset_ids:
+        - fDDTReOVyoWQXFuW7CDyHOK6c38S28xeWm4j/VTEln96jflhdhmZCliuJTFrTQb4
+        multiple_retrieval_config:
+          reranking_enable: false
+          reranking_mode: weighted_score
+          top_k: 4
+          weights:
+            keyword_setting:
+              keyword_weight: 0
+            vector_setting:
+              embedding_model_name: text-embedding-3-small
+              embedding_provider_name: langgenius/openai/openai
+              vector_weight: 1
+            weight_type: customized
+        query_attachment_selector: []
+        query_variable_selector:
+        - '1774698064048'
+        - sys.query
+        retrieval_mode: multiple
+        selected: false
+        title: 지식 검색 2
+        type: knowledge-retrieval
+      height: 90
+      id: '1775823595011'
+      position:
+        x: 1020.9774340736208
+        y: 367.78789720667294
+      positionAbsolute:
+        x: 1020.9774340736208
+        y: 367.78789720667294
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: gemini-2.5-flash
+          provider: langgenius/gemini/google
+        prompt_template:
+        - id: 17dcccf4-ecb5-4980-b0fd-a951f2ba6253
+          role: system
+          text: '당신은 뉴스 큐레이션 서비스의 친절한 챗봇입니다.
+
+
+            규칙:
+
+            1. 사용자의 인사나 일반적인 대화에 자연스럽게 응답하세요.
+
+            2. 뉴스나 기사에 대한 질문이 들어오면, 기사를 선택한 후 질문해달라고 안내하세요.
+
+            3. 답변은 한국어로 작성하세요.
+
+            4. 간결하고 친근한 톤으로 답변하세요.'
+        - id: 61c78fb7-cecd-4b0a-b837-f3ad42a4f9b9
+          role: user
+          text: '사용자 질문: {{#sys.query#}}'
+        selected: false
+        title: LLM 3
+        type: llm
+        vision:
+          enabled: false
+      height: 88
+      id: '1775823749881'
+      position:
+        x: 1020.9774340736208
+        y: 489.33037238786426
+      positionAbsolute:
+        x: 1020.9774340736208
+        y: 489.33037238786426
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        answer: '{{#1775823749881.text#}}'
+        selected: false
+        title: 답변 3
+        type: answer
+        variables: []
+      height: 102
+      id: '1775823756141'
+      position:
+        x: 1318.178730078037
+        y: 496.66056643135016
+      positionAbsolute:
+        x: 1318.178730078037
+        y: 496.66056643135016
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    viewport:
+      x: -691.7486601521077
+      y: 219.53547527882898
+      zoom: 1.113850459156937
+  rag_pipeline_variables: []

@@ -1,0 +1,230 @@
+app:
+  description: ''
+  icon: 🤖
+  icon_background: '#FFEAD5'
+  icon_type: emoji
+  mode: workflow
+  name: summary_ko
+  use_icon_as_answer_icon: false
+dependencies:
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: langgenius/gemini:0.7.20@de0063a630a6d1b2c025fb84f3462ba5151fb60618309cd595c3f4711b1df847
+    version: null
+kind: app
+version: 0.6.0
+workflow:
+  conversation_variables: []
+  environment_variables: []
+  features:
+    file_upload:
+      allowed_file_extensions:
+      - .JPG
+      - .JPEG
+      - .PNG
+      - .GIF
+      - .WEBP
+      - .SVG
+      allowed_file_types:
+      - image
+      allowed_file_upload_methods:
+      - local_file
+      - remote_url
+      enabled: false
+      fileUploadConfig:
+        attachment_image_file_size_limit: 2
+        audio_file_size_limit: 50
+        batch_count_limit: 5
+        file_size_limit: 15
+        file_upload_limit: 20
+        image_file_batch_limit: 10
+        image_file_size_limit: 10
+        single_chunk_attachment_limit: 10
+        video_file_size_limit: 100
+        workflow_file_upload_limit: 10
+      image:
+        enabled: false
+        number_limits: 3
+        transfer_methods:
+        - local_file
+        - remote_url
+      number_limits: 3
+    opening_statement: ''
+    retriever_resource:
+      enabled: true
+    sensitive_word_avoidance:
+      enabled: false
+    speech_to_text:
+      enabled: false
+    suggested_questions: []
+    suggested_questions_after_answer:
+      enabled: false
+    text_to_speech:
+      enabled: false
+      language: ''
+      voice: ''
+  graph:
+    edges:
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: start
+        targetType: llm
+      id: 1774624088980-source-1774626167151-target
+      source: '1774624088980'
+      sourceHandle: source
+      target: '1774626167151'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: llm
+        targetType: end
+      id: 1774626167151-source-1774627541126-target
+      source: '1774626167151'
+      sourceHandle: source
+      target: '1774627541126'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    nodes:
+    - data:
+        selected: false
+        title: 시작
+        type: start
+        variables:
+        - default: ''
+          hint: ''
+          label: user_id
+          options: []
+          placeholder: ''
+          required: true
+          type: number
+          variable: user_id
+        - default: ''
+          hint: ''
+          label: message
+          options: []
+          placeholder: ''
+          required: false
+          type: text-input
+          variable: message
+        - default: ''
+          hint: ''
+          label: article_id
+          options: []
+          placeholder: ''
+          required: true
+          type: number
+          variable: article_id
+        - default: ''
+          hint: ''
+          label: title
+          options: []
+          placeholder: ''
+          required: true
+          type: text-input
+          variable: title
+        - default: ''
+          hint: ''
+          label: content
+          options: []
+          placeholder: ''
+          required: true
+          type: paragraph
+          variable: content
+      height: 212
+      id: '1774624088980'
+      position:
+        x: 80
+        y: 282
+      positionAbsolute:
+        x: 80
+        y: 282
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        model:
+          completion_params:
+            temperature: 0.6
+          mode: chat
+          name: gemini-2.5-pro
+          provider: langgenius/gemini/google
+        prompt_template:
+        - id: cafc76fc-d901-439c-8ef4-a9b7ae226906
+          role: system
+          text: "당신은 뉴스 기사 요약 전문가입니다.\n\n[목표]\n입력된 기사 1건을 한국어로 정확하고 간결하게 요약하세요.\n\n\
+            [입력값]\n- article_id: 기사 식별자\n- title: 기사 제목\n- content: 기사 본문\n- message:\
+            \ 사용자 요청 메시지(선택값)\n\n[요약 규칙]\n1. 반드시 기사 1건만 요약하세요.\n2. 출력은 반드시 한국어로 작성하세요.\n\
+            3. 기사 언어를 자동으로 판단하세요.\n4. 영어 기사 등 한국어가 아닌 기사는 내용을 이해한 뒤 한국어로 번역하여 요약하세요.\n\
+            5. 한국어 기사는 바로 요약하세요.\n6. 제목과 본문을 함께 참고하되, 핵심 내용은 본문 기준으로 정리하세요.\n7. 추측,\
+            \ 과장, 없는 정보 추가를 금지합니다.\n8. 광고성 문구, 불필요한 수식어, 인사말, 머리말을 넣지 마세요.\n9. message가\
+            \ 주어지면 해당 요청을 반영하세요.\n   - 예: \"3줄로 요약해줘\" → 3문장 내외\n   - 예: \"핵심만 요약해줘\"\
+            \ → 핵심 위주로 짧게\n   - 예: \"자세히 요약해줘\" → 상대적으로 풍부하게\n10. message가 비어 있으면\
+            \ 기본적으로 2~3문장으로 요약하세요.\n11. 출력은 오직 최종 요약문만 반환하세요.\n12. \"기사 id:\", \"\
+            요약본:\" 같은 라벨, JSON, 코드블록, 설명 문장을 절대 출력하지 마세요."
+        - id: 6d56fc6f-60f4-4ead-a950-021d55338300
+          role: user
+          text: 'article_id: {{#1774624088980.article_id#}}
+
+            title: {{#1774624088980.title#}}
+
+            content: {{#1774624088980.content#}}
+
+
+            message: {{#1774624088980.message#}}'
+        selected: true
+        title: LLM
+        type: llm
+        vision:
+          enabled: false
+      height: 87
+      id: '1774626167151'
+      position:
+        x: 385
+        y: 282
+      positionAbsolute:
+        x: 385
+        y: 282
+      selected: true
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 241
+    - data:
+        outputs:
+        - value_selector:
+          - '1774626167151'
+          - text
+          value_type: string
+          variable: summary_text
+        selected: false
+        title: 출력
+        type: end
+      height: 88
+      id: '1774627541126'
+      position:
+        x: 684
+        y: 282
+      positionAbsolute:
+        x: 684
+        y: 282
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 241
+    viewport:
+      x: -21.75555514028622
+      y: -35.617540056846906
+      zoom: 1.360790000174377
+  rag_pipeline_variables: []
