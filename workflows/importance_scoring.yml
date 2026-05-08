@@ -91,11 +91,24 @@ workflow:
       type: custom
       zIndex: 0
     - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: llm
+        targetType: llm
+      id: 1775742352885-source-1778247458121-target
+      source: '1775742352885'
+      sourceHandle: source
+      target: '1778247458121'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
         isInLoop: false
         sourceType: llm
         targetType: code
-      id: 1775742352885-source-1774524091887-target
-      source: '1775742352885'
+      id: 1778247458121-source-1774524091887-target
+      source: '1778247458121'
       sourceHandle: source
       target: '1774524091887'
       targetHandle: target
@@ -124,7 +137,7 @@ workflow:
           required: true
           type: paragraph
           variable: articles
-      height: 134
+      height: 135
       id: '1774507020143'
       position:
         x: 70.74067104295028
@@ -138,21 +151,31 @@ workflow:
       type: custom
       width: 242
     - data:
-        code: "def main(llm_output: str) -> dict:\n    import json\n    import re\n\
-          \n    if not llm_output:\n        return {\"items\": []}\n\n    text = re.sub(r'```json|```',\
-          \ '', llm_output).strip()\n    match = re.search(r'\\{[\\s\\S]*\\}', text)\n\
-          \    if not match:\n        return {\"items\": []}\n\n    try:\n       \
-          \ parsed = json.loads(match.group())\n    except json.JSONDecodeError:\n\
-          \        return {\"items\": []}\n\n    items = parsed.get(\"items\") or\
-          \ parsed.get(\"articles\") or []\n\n    result = []\n    for item in items:\n\
-          \        score = item.get(\"score\", 50)\n        try:\n            score\
-          \ = int(float(score))\n        except (ValueError, TypeError):\n       \
-          \     importance_map = {\"high\": 80, \"medium\": 50, \"low\": 20}\n   \
-          \         score = importance_map.get(str(item.get(\"importance\", \"\")).lower(),\
-          \ 50)\n\n        result.append({\n            \"article_id\": item.get(\"\
-          article_id\"),\n            \"score\": max(1, min(100, score)),\n      \
-          \      \"reason\": item.get(\"reason\", \"\")\n        })\n\n    return\
-          \ {\"items\": result}"
+        code: "def main(llm_output: str) -> dict:\n    import json, re\n\n    if not\
+          \ llm_output or not llm_output.strip():\n        return {\"items\": []}\n\
+          \n    # 마크다운 코드블록 및 앞뒤 텍스트 제거\n    text = re.sub(r'```json|```', '', llm_output).strip()\n\
+          \n    # JSON 객체 추출 (가장 바깥쪽 중괄호 기준)\n    match = re.search(r'\\{[\\s\\S]*\\\
+          }', text)\n    if not match:\n        return {\"items\": []}\n\n    try:\n\
+          \        parsed = json.loads(match.group())\n    except json.JSONDecodeError:\n\
+          \        # 마지막 수단: 불완전 JSON 복구 시도\n        try:\n            partial = match.group().rstrip(',')\
+          \ + '}'\n            parsed = json.loads(partial)\n        except Exception:\n\
+          \            return {\"items\": []}\n\n    # items 키 유연하게 탐색\n    items\
+          \ = parsed.get(\"items\") or parsed.get(\"articles\") or parsed.get(\"results\"\
+          ) or []\n    if not isinstance(items, list):\n        return {\"items\"\
+          : []}\n\n    importance_map = {\"high\": 80, \"medium\": 50, \"low\": 20}\n\
+          \    result = []\n\n    for item in items:\n        if not isinstance(item,\
+          \ dict):\n            continue\n\n        # score 처리\n        score = item.get(\"\
+          score\", 50)\n        try:\n            score = int(float(score))\n    \
+          \    except (ValueError, TypeError):\n            score = importance_map.get(str(item.get(\"\
+          importance\", \"\")).lower(), 50)\n\n        # article_id 타입 보정\n      \
+          \  article_id = item.get(\"article_id\")\n        try:\n            article_id\
+          \ = int(article_id) if article_id is not None else None\n        except\
+          \ (ValueError, TypeError):\n            article_id = str(article_id) if\
+          \ article_id is not None else None\n\n        # reason 처리\n        reason\
+          \ = str(item.get(\"reason\", \"\")).strip()\n        if not reason:\n  \
+          \          reason = \"이유 없음\"\n\n        result.append({\n            \"\
+          article_id\": article_id,\n            \"score\": max(1, min(100, score)),\n\
+          \            \"reason\": reason\n        })\n\n    return {\"items\": result}"
         code_language: python3
         outputs:
           items:
@@ -163,23 +186,23 @@ workflow:
         type: code
         variables:
         - value_selector:
-          - '1775742352885'
+          - '1778247458121'
           - text
           value_type: string
           variable: llm_output
-      height: 51
+      height: 52
       id: '1774524091887'
       position:
-        x: 721.1878319446481
+        x: 1021.1878319446481
         y: 282
       positionAbsolute:
-        x: 721.1878319446481
+        x: 1021.1878319446481
         y: 282
       selected: false
       sourcePosition: right
       targetPosition: left
       type: custom
-      width: 241
+      width: 242
     - data:
         outputs:
         - value_selector:
@@ -193,72 +216,75 @@ workflow:
       height: 88
       id: '1774607960090'
       position:
-        x: 1023.1878319446481
+        x: 1323.1878319446482
         y: 282
       positionAbsolute:
-        x: 1023.1878319446481
+        x: 1323.1878319446482
         y: 282
       selected: false
       sourcePosition: right
       targetPosition: left
       type: custom
-      width: 241
+      width: 242
     - data:
         context:
           enabled: false
           variable_selector: []
         model:
           completion_params:
-            temperature: 0.7
+            temperature: 0.3
           mode: chat
-          name: gemini-2.5-flash
+          name: gemini-2.5-pro
           provider: langgenius/gemini/google
         prompt_template:
         - id: bd84d7ff-0925-4b10-ad86-a5c46050560f
           role: system
-          text: 'You are a news importance evaluator.
+          text: '당신은 뉴스 중요도 분석 전문가입니다.
 
-            Analyze each article and assign an importance score.
-
-
-            Scoring criteria:
-
-            - 80-100: Breaking news, major global/national impact
-
-            - 50-79: Significant but not urgent
-
-            - 20-49: General interest, low urgency
-
-            - 1-19: Minor or niche topics
+            입력된 기사 목록에 대해 각 기사별로 아래 3가지 항목을 분석하세요.
 
 
-            Return ONLY this JSON structure, nothing else:
+            [분석 항목]
 
-            {"items": [{"article_id": 101, "score": 85, "reason": "한국어 이유"}, {"article_id":
-            102, "score": 60, "reason": "한국어 이유"}]}
+            1. 영향 범위: 이 기사가 영향을 미치는 대상의 규모 (개인 / 지역 / 국가 / 글로벌)
+
+            2. 시급성: 현재 진행 중인 사안인지, 즉각적 대응이 필요한지 여부
+
+            3. 파급력: 경제·정치·사회적으로 연쇄 반응이나 실질적 결과(정책 변화, 시장 영향, 인명 피해 등)가 수반되는지
 
 
-            Rules:
+            [출력 형식]
 
-            - score must be integer 1-100
+            각 기사를 아래 형식으로 분석하세요. JSON 없이 텍스트로만 출력합니다.
 
-            - reason must be one sentence in Korean
 
-            - Do NOT include title, content, summary or any other fields
+            article_id: {id}
 
-            - Do NOT use markdown or code blocks'
+            - 영향 범위: ...
+
+            - 시급성: ...
+
+            - 파급력: ...
+
+            - 종합 판단: ... (1~2문장으로 이 기사의 중요도를 종합적으로 평가)
+
+
+            article_id: {id}
+
+            - 영향 범위: ...
+
+            ...'
         - id: f8c15cf5-129d-4f36-b10c-f93e6b598093
           role: user
-          text: 'Evaluate these articles and return json only:
+          text: '[기사 목록 JSON]
 
-
-            Articles: {{#1774507020143.articles#}}'
+            {{#1774507020143.articles#}}'
         selected: false
         title: LLM
         type: llm
         vision:
           enabled: false
-      height: 87
+      height: 88
       id: '1775742352885'
       position:
         x: 369.48046645537227
@@ -270,9 +296,137 @@ workflow:
       sourcePosition: right
       targetPosition: left
       type: custom
-      width: 241
+      width: 242
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        model:
+          completion_params:
+            temperature: 0.1
+          mode: chat
+          name: gemini-2.5-pro
+          provider: langgenius/gemini/google
+        prompt_template:
+        - id: 315eb913-a9ab-4bbd-a9c7-62c379c939be
+          role: system
+          text: '당신은 뉴스 기사 중요도 점수 산정 전문가입니다.
+
+            제공된 [기사 분석 결과]를 참고하여 각 기사의 중요도를 1~100점으로 평가하고 JSON만 반환합니다.
+
+
+            ---
+
+
+            [카테고리별 점수 기준]
+
+
+            ■ 80~100점 (매우 중요)
+
+            - 경제: 기준금리 결정, 글로벌 금융위기, 대형 기업 파산·합병, 환율 급변
+
+            - 정치: 선거 결과, 정권 교체, 주요 입법 통과, 국가 간 외교 분쟁 격화
+
+            - 사회: 대규모 재난·사고(다수 사망), 전국 단위 파업·시위
+
+            - 국제: 전쟁·무력 충돌 발생, 국제 제재, 글로벌 공급망 붕괴
+
+
+            ■ 50~79점 (중요)
+
+            - 경제: 주요 기업 실적 발표, 산업 규제 변화, 부동산 정책 발표
+
+            - 정치: 장관급 인사, 여야 협상 타결, 지방선거 결과
+
+            - 사회: 사회적 논란이 되는 사건, 수도권 영향을 미치는 이슈
+
+            - 국제: 주요국 정상회담, 무역 협정 체결, 지역 분쟁 발생
+
+
+            ■ 20~49점 (보통)
+
+            - 경제: 중소기업 동향, 소비 트렌드, 특정 업계 단신
+
+            - 정치: 당내 논의, 지방 정책 변화, 위원회 구성
+
+            - 사회: 지역 사건·사고, 문화·스포츠 이슈
+
+            - 국제: 해외 지역 뉴스, 국제기구 일반 발표
+
+
+            ■ 1~19점 (낮음)
+
+            - 홍보성 기사, 특정 개인·소집단에만 해당하는 내용
+
+            - 반복 보도, 정보 가치가 낮은 단신
+
+
+            ---
+
+
+            [점수 분산 규칙]
+
+            - 기사가 2건 이상이면, 가장 높은 점수와 가장 낮은 점수의 차이가 반드시 30점 이상이어야 합니다.
+
+            - 모든 기사에 유사한 점수(±10점 이내)를 부여하지 마세요.
+
+            - 기사가 1건일 경우 이 규칙은 적용하지 않습니다.
+
+
+            ---
+
+
+            [출력 규칙]
+
+            - 반드시 아래 JSON 구조만 출력하세요.
+
+            - 마크다운, 코드블록(```), 설명 문장, 줄바꿈 전후 텍스트 일절 금지.
+
+            - article_id는 입력값 그대로 유지하세요.
+
+            - score는 1~100 사이의 정수입니다.
+
+            - reason은 한국어 1~2문장으로, 영향 범위·시급성·파급력 중 점수에 결정적 영향을 준 요소를 구체적으로 포함하세요.
+
+            - title, content 등 다른 필드는 절대 포함하지 마세요.
+
+
+            출력 형식:
+
+            {"items": [{"article_id": 101, "score": 85, "reason": "한국어 이유"}, {"article_id":
+            102, "score": 42, "reason": "한국어 이유"}]}'
+        - id: 49ccc579-0606-4c6a-8f74-0d8e8d7648ef
+          role: user
+          text: '[기사 분석 결과]; {{#1775742352885.text#}}
+
+
+            [기사 목록 JSON]; {{#1774507020143.articles#}}
+
+
+            위 분석 결과를 참고하여 각 기사의 점수를 산정하고 JSON만 반환하세요.
+
+
+            [출력]'
+        selected: false
+        title: LLM 2
+        type: llm
+        vision:
+          enabled: false
+      height: 88
+      id: '1778247458121'
+      position:
+        x: 721.1878319446481
+        y: 282
+      positionAbsolute:
+        x: 721.1878319446481
+        y: 282
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
     viewport:
-      x: 173.12602572035058
-      y: 112.75532315207062
-      zoom: 0.9201876506248752
+      x: 320.03574850620066
+      y: 192.30324917190114
+      zoom: 1
   rag_pipeline_variables: []
