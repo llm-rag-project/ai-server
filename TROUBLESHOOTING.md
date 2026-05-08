@@ -120,12 +120,12 @@ Milvus가 꺼진 상태에서 인덱싱 시도
 Dify v1.13.0 버그
 
 **해결**
-v1.13.1로 업그레이드 후 `.env`에 `REDIS_MAX_CONNECTIONS=10` 추가
+v1.13.3로 업그레이드 후 `.env`에 `REDIS_MAX_CONNECTIONS=10` 추가
 
 ```bash
 cd dify
 git fetch --tags
-git checkout 1.13.1
+git checkout 1.13.3
 cd docker
 docker compose down
 docker compose up -d
