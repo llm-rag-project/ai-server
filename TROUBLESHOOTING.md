@@ -136,3 +136,78 @@ docker compose up -d
 ```env
 REDIS_MAX_CONNECTIONS=10
 ```
+
+## 7. 지식검색 노드 무한 대기 문제 (Milvus 미실행)
+
+**증상**
+
+- rag_chat 워크플로우에서 지식검색 노드에서 멈춤
+- 트레이싱 탭에서 지식검색 노드가 `...` 상태로 응답 없음
+- Dify 컨테이너는 모두 `Up` 상태이고 Redis, Weaviate도 정상
+- Docker 재시작 또는 서버 재부팅 후 발생하는 경우가 많음
+
+**원인**
+
+Milvus가 Dify와 별도 docker-compose로 구성되어 있고 `restart: always` 옵션이 없어서, Docker 재시작 또는 서버 재부팅 시 자동으로 올라오지 않는다.
+
+Dify의 지식검색 노드는 Milvus에 벡터 검색 요청을 보내는데, Milvus가 내려가 있으면 응답을 받지 못하고 무한 대기 상태가 된다.
+
+**진단 방법**
+
+```bash
+cd C:\Users\lab\milvus
+docker compose ps
+```
+
+아래처럼 컨테이너 목록이 비어있으면 Milvus가 내려간 상태다.
+
+```
+NAME      IMAGE     COMMAND   SERVICE   CREATED   STATUS    PORTS
+(없음)
+```
+
+정상 상태라면 `milvus-etcd`, `milvus-minio`, `milvus-standalone` 3개가 `Up` 상태로 보여야 한다.
+
+**즉시 해결 방법**
+
+```bash
+cd C:\Users\lab\milvus
+docker compose up -d
+```
+
+Milvus가 완전히 올라오는 데 약 1~2분 소요된다. `milvus-standalone`의 healthcheck가 통과될 때까지 기다린 후 Dify에서 다시 테스트한다.
+
+---
+
+**영구 해결 방법 (restart: always 설정)**
+
+`C:\Users\lab\milvus\docker-compose.yml`에서 각 서비스에 `restart: always`를 추가한다.
+
+```yaml
+services:
+  etcd:
+    restart: always
+    ...
+  minio:
+    restart: always
+    ...
+  standalone:
+    restart: always
+    ...
+```
+
+저장 후 재적용:
+
+```bash
+cd C:\Users\lab\milvus
+docker compose up -d
+```
+
+이후 Docker 재시작이나 서버 재부팅 시에도 Milvus가 자동으로 올라온다.
+
+---
+
+**참고**
+
+- Dify의 `docker-compose.yml`에는 이미 `restart: always`가 적용되어 있어서 Dify 컨테이너는 자동 재시작된다. Milvus만 별도로 설정이 필요하다.
+- Milvus는 etcd → minio → standalone 순서로 의존성이 있어서 올라오는 데 시간이 걸린다. `docker compose up -d` 직후 바로 테스트하면 아직 준비가 안 된 상태일 수 있다.
