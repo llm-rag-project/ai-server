@@ -136,6 +136,7 @@ docker compose up -d
 ```env
 REDIS_MAX_CONNECTIONS=10
 ```
+---
 
 ## 7. 지식검색 노드 무한 대기 문제 (Milvus 미실행)
 
