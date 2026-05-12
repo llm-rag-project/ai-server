@@ -10,7 +10,7 @@ dependencies:
 - current_identifier: null
   type: marketplace
   value:
-    marketplace_plugin_unique_identifier: langgenius/gemini:0.7.20@de0063a630a6d1b2c025fb84f3462ba5151fb60618309cd595c3f4711b1df847
+    marketplace_plugin_unique_identifier: langgenius/gemini:0.7.22@e9e5725768b1d79274bf5dee2052f4d99d736f104cc98dad57392c5b70412502
     version: null
 kind: app
 version: 0.6.0
@@ -81,18 +81,6 @@ workflow:
     - data:
         isInIteration: false
         isInLoop: false
-        sourceType: start
-        targetType: llm
-      id: 1774507020143-source-1775742352885-target
-      source: '1774507020143'
-      sourceHandle: source
-      target: '1775742352885'
-      targetHandle: target
-      type: custom
-      zIndex: 0
-    - data:
-        isInIteration: false
-        isInLoop: false
         sourceType: llm
         targetType: llm
       id: 1775742352885-source-1778247458121-target
@@ -111,6 +99,29 @@ workflow:
       source: '1778247458121'
       sourceHandle: source
       target: '1774524091887'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: start
+        targetType: code
+      id: 1774507020143-source-1778581060421-target
+      source: '1774507020143'
+      sourceHandle: source
+      target: '1778581060421'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: code
+        targetType: llm
+      id: 1778581060421-source-1775742352885-target
+      source: '1778581060421'
+      sourceHandle: source
+      target: '1775742352885'
       targetHandle: target
       type: custom
       zIndex: 0
@@ -137,13 +148,21 @@ workflow:
           required: true
           type: paragraph
           variable: articles
-      height: 135
+        - default: ''
+          hint: ''
+          label: feedback_history
+          options: []
+          placeholder: ''
+          required: false
+          type: text-input
+          variable: feedback_history
+      height: 161
       id: '1774507020143'
       position:
-        x: 70.74067104295028
+        x: 152.90237107350447
         y: 290.39350165619766
       positionAbsolute:
-        x: 70.74067104295028
+        x: 152.90237107350447
         y: 290.39350165619766
       selected: false
       sourcePosition: right
@@ -182,7 +201,7 @@ workflow:
             children: null
             type: array[object]
         selected: false
-        title: 코드
+        title: 코드2
         type: code
         variables:
         - value_selector:
@@ -193,12 +212,12 @@ workflow:
       height: 52
       id: '1774524091887'
       position:
-        x: 1021.1878319446481
-        y: 282
+        x: 1363.5594249525564
+        y: 311.39350165619766
       positionAbsolute:
-        x: 1021.1878319446481
-        y: 282
-      selected: false
+        x: 1363.5594249525564
+        y: 311.39350165619766
+      selected: true
       sourcePosition: right
       targetPosition: left
       type: custom
@@ -216,11 +235,11 @@ workflow:
       height: 88
       id: '1774607960090'
       position:
-        x: 1323.1878319446482
-        y: 282
+        x: 1717.1475211723805
+        y: 311.39350165619766
       positionAbsolute:
-        x: 1323.1878319446482
-        y: 282
+        x: 1717.1475211723805
+        y: 311.39350165619766
       selected: false
       sourcePosition: right
       targetPosition: left
@@ -280,19 +299,19 @@ workflow:
 
             {{#1774507020143.articles#}}'
         selected: false
-        title: LLM
+        title: LLM-분석
         type: llm
         vision:
           enabled: false
       height: 88
       id: '1775742352885'
       position:
-        x: 369.48046645537227
-        y: 289.3067667936716
+        x: 728.8640592230349
+        y: 311.39350165619766
       positionAbsolute:
-        x: 369.48046645537227
-        y: 289.3067667936716
-      selected: true
+        x: 728.8640592230349
+        y: 311.39350165619766
+      selected: false
       sourcePosition: right
       targetPosition: left
       type: custom
@@ -310,85 +329,55 @@ workflow:
         prompt_template:
         - id: 315eb913-a9ab-4bbd-a9c7-62c379c939be
           role: system
-          text: '당신은 뉴스 기사 중요도 점수 산정 전문가입니다.
-
-            제공된 [기사 분석 결과]를 참고하여 각 기사의 중요도를 1~100점으로 평가하고 JSON만 반환합니다.
+          text: '---
 
 
-            ---
+            [사용자 맞춤 보정 규칙 — 기본 기준보다 우선 적용]
 
 
-            [카테고리별 점수 기준]
+            아래 [사용자 피드백 이력]이 비어있지 않은 경우,
+
+            반드시 아래 절차를 따르세요.
 
 
-            ■ 80~100점 (매우 중요)
+            [피드백 해석 방법]
 
-            - 경제: 기준금리 결정, 글로벌 금융위기, 대형 기업 파산·합병, 환율 급변
+            - delta 양수: 사용자가 해당 유형의 기사를 중요하게 봄 → 유사 기사 점수 올려야 함
 
-            - 정치: 선거 결과, 정권 교체, 주요 입법 통과, 국가 간 외교 분쟁 격화
+            - delta 음수: 사용자가 해당 유형의 기사를 덜 중요하게 봄 → 유사 기사 점수 내려야 함
 
-            - 사회: 대규모 재난·사고(다수 사망), 전국 단위 파업·시위
-
-            - 국제: 전쟁·무력 충돌 발생, 국제 제재, 글로벌 공급망 붕괴
+            - reason: 사용자가 직접 설명한 조정 이유 → 어떤 유형의 기사인지 파악하는 핵심 근거
 
 
-            ■ 50~79점 (중요)
+            [보정 폭 기준]
 
-            - 경제: 주요 기업 실적 발표, 산업 규제 변화, 부동산 정책 발표
+            - delta 절댓값 30 이상 → ±20점 보정
 
-            - 정치: 장관급 인사, 여야 협상 타결, 지방선거 결과
+            - delta 절댓값 15~29 → ±15점 보정
 
-            - 사회: 사회적 논란이 되는 사건, 수도권 영향을 미치는 이슈
-
-            - 국제: 주요국 정상회담, 무역 협정 체결, 지역 분쟁 발생
+            - delta 절댓값 14 이하 → ±10점 보정
 
 
-            ■ 20~49점 (보통)
+            [적용 절차]
 
-            - 경제: 중소기업 동향, 소비 트렌드, 특정 업계 단신
+            1. 각 피드백의 reason을 읽고 어떤 유형의 기사인지 파악
 
-            - 정치: 당내 논의, 지방 정책 변화, 위원회 구성
+            2. 현재 스코어링할 기사 본문과 대조하여 유사한 유형인지 판단
 
-            - 사회: 지역 사건·사고, 문화·스포츠 이슈
+            3. 유사하면 delta 방향과 보정 폭 기준에 따라 점수 보정
 
-            - 국제: 해외 지역 뉴스, 국제기구 일반 발표
+            4. 보정 후 1~100 범위 클램핑
 
+            5. 점수 분산 규칙(최고-최저 차이 30점 이상)은 보정 후에도 유지
 
-            ■ 1~19점 (낮음)
-
-            - 홍보성 기사, 특정 개인·소집단에만 해당하는 내용
-
-            - 반복 보도, 정보 가치가 낮은 단신
+            6. 패턴과 무관한 기사는 기본 기준으로만 산정
 
 
-            ---
+            [비어있을 때]
 
+            [사용자 피드백 이력]이 "[]"이면 이 섹션 전체를 무시하고
 
-            [점수 분산 규칙]
-
-            - 기사가 2건 이상이면, 가장 높은 점수와 가장 낮은 점수의 차이가 반드시 30점 이상이어야 합니다.
-
-            - 모든 기사에 유사한 점수(±10점 이내)를 부여하지 마세요.
-
-            - 기사가 1건일 경우 이 규칙은 적용하지 않습니다.
-
-
-            ---
-
-
-            [출력 규칙]
-
-            - 반드시 아래 JSON 구조만 출력하세요.
-
-            - 마크다운, 코드블록(```), 설명 문장, 줄바꿈 전후 텍스트 일절 금지.
-
-            - article_id는 입력값 그대로 유지하세요.
-
-            - score는 1~100 사이의 정수입니다.
-
-            - reason은 한국어 1~2문장으로, 영향 범위·시급성·파급력 중 점수에 결정적 영향을 준 요소를 구체적으로 포함하세요.
-
-            - title, content 등 다른 필드는 절대 포함하지 마세요.
+            기본 기준만 적용하세요.
 
 
             출력 형식:
@@ -397,36 +386,82 @@ workflow:
             102, "score": 42, "reason": "한국어 이유"}]}'
         - id: 49ccc579-0606-4c6a-8f74-0d8e8d7648ef
           role: user
-          text: '[기사 분석 결과]; {{#1775742352885.text#}}
-
-
-            [기사 목록 JSON]; {{#1774507020143.articles#}}
-
-
-            위 분석 결과를 참고하여 각 기사의 점수를 산정하고 JSON만 반환하세요.
-
-
-            [출력]'
+          text: "[기사 분석 결과]; {{#1775742352885.text#}}\n\n[기사 목록 JSON]; {{#1774507020143.articles#}}\n\
+            \n [사용자 피드백 이력]: {{#1778581060421.filtered_feedback#}}\n\n위 분석 결과를 참고하여\
+            \ 각 기사의 점수를 산정하고 JSON만 반환하세요.\n\n[출력]"
         selected: false
-        title: LLM 2
+        title: LLM-점수산출
         type: llm
         vision:
           enabled: false
       height: 88
       id: '1778247458121'
       position:
-        x: 721.1878319446481
-        y: 282
+        x: 1027.1555053940174
+        y: 311.39350165619766
       positionAbsolute:
-        x: 721.1878319446481
-        y: 282
+        x: 1027.1555053940174
+        y: 311.39350165619766
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        code: "def main(feedback_history: str) -> dict:\n    import json\n\n    if\
+          \ not feedback_history or not feedback_history.strip():\n        return\
+          \ {\n            \"filtered_feedback\": \"[]\",\n            \"has_feedback\"\
+          : False\n        }\n\n    try:\n        feedbacks = json.loads(feedback_history)\n\
+          \    except Exception:\n        return {\n            \"filtered_feedback\"\
+          : \"[]\",\n            \"has_feedback\": False\n        }\n\n    if not\
+          \ isinstance(feedbacks, list) or len(feedbacks) == 0:\n        return {\n\
+          \            \"filtered_feedback\": \"[]\",\n            \"has_feedback\"\
+          : False\n        }\n\n    # 최근 15건만 유지 (메인 서버가 최신순 정렬해서 보낸다고 가정)\n    feedbacks\
+          \ = feedbacks[:15]\n\n    slim = []\n    for f in feedbacks:\n        original\
+          \ = f.get(\"original_score\")\n        user = f.get(\"user_score\")\n  \
+          \      reason = str(f.get(\"reason\", \"\")).strip()\n\n        # 필수 필드\
+          \ 누락 시 스킵\n        if original is None or user is None or not reason:\n\
+          \            continue\n\n        try:\n            original = int(original)\n\
+          \            user = int(user)\n        except (ValueError, TypeError):\n\
+          \            continue\n\n        # delta 자동 계산\n        delta = user - original\n\
+          \n        slim.append({\n            \"original_score\": original,\n   \
+          \         \"user_score\": user,\n            \"delta\": delta,\n       \
+          \     \"reason\": reason\n        })\n\n    if not slim:\n        return\
+          \ {\n            \"filtered_feedback\": \"[]\",\n            \"has_feedback\"\
+          : False\n        }\n\n    return {\n        \"filtered_feedback\": json.dumps(slim,\
+          \ ensure_ascii=False),\n        \"has_feedback\": True\n    }"
+        code_language: python3
+        outputs:
+          filtered_feedback:
+            children: null
+            type: string
+          has_feedback:
+            children: null
+            type: boolean
+        selected: false
+        title: 코드 1
+        type: code
+        variables:
+        - value_selector:
+          - '1774507020143'
+          - feedback_history
+          value_type: string
+          variable: feedback_history
+      height: 52
+      id: '1778581060421'
+      position:
+        x: 439.90478076727595
+        y: 311.39350165619766
+      positionAbsolute:
+        x: 439.90478076727595
+        y: 311.39350165619766
       selected: false
       sourcePosition: right
       targetPosition: left
       type: custom
       width: 242
     viewport:
-      x: 320.03574850620066
-      y: 192.30324917190114
-      zoom: 1
+      x: -24.509074770148118
+      y: -49.84032188906593
+      zoom: 1.2599210498948732
   rag_pipeline_variables: []
