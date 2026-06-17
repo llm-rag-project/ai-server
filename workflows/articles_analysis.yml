@@ -10,7 +10,7 @@ dependencies:
 - current_identifier: null
   type: marketplace
   value:
-    marketplace_plugin_unique_identifier: langgenius/gemini:0.7.22@e9e5725768b1d79274bf5dee2052f4d99d736f104cc98dad57392c5b70412502
+    marketplace_plugin_unique_identifier: langgenius/openrouter:0.0.54@fea0bb6f5208e9c654bd8114c93582760994a7406355512c3381bd8b723498b7
     version: null
 kind: app
 version: 0.6.0
@@ -128,15 +128,15 @@ workflow:
           required: true
           type: paragraph
           variable: articles
-      height: 108
+      height: 109
       id: '1779271952775'
       position:
-        x: 80
-        y: 282
+        x: 103
+        y: 261
       positionAbsolute:
-        x: 80
-        y: 282
-      selected: false
+        x: 103
+        y: 261
+      selected: true
       sourcePosition: right
       targetPosition: left
       type: custom
@@ -163,7 +163,7 @@ workflow:
           - articles
           value_type: string
           variable: articles
-      height: 51
+      height: 52
       id: '1779271952776'
       position:
         x: 382
@@ -175,7 +175,7 @@ workflow:
       sourcePosition: right
       targetPosition: left
       type: custom
-      width: 241
+      width: 242
     - data:
         context:
           enabled: false
@@ -184,8 +184,8 @@ workflow:
           completion_params:
             temperature: 0.1
           mode: chat
-          name: gemini-2.5-pro
-          provider: langgenius/gemini/google
+          name: google/gemini-3.1-flash-lite-preview
+          provider: langgenius/openrouter/openrouter
         prompt_template:
         - id: 1322af7f-5a4f-4fe1-8a89-20affc221cba
           role: system
@@ -216,7 +216,7 @@ workflow:
         type: llm
         vision:
           enabled: false
-      height: 87
+      height: 88
       id: '1779271958329'
       position:
         x: 682
@@ -224,11 +224,11 @@ workflow:
       positionAbsolute:
         x: 682
         y: 282
-      selected: true
+      selected: false
       sourcePosition: right
       targetPosition: left
       type: custom
-      width: 241
+      width: 242
     - data:
         code: "import json\nimport re\n\ndef main(arg1: str) -> dict:\n    text =\
           \ arg1.strip()\n    \n    # 리터럴 \\n 을 실제 줄바꿈으로 변환\n    text = text.replace('\\\
@@ -266,7 +266,7 @@ workflow:
           - text
           value_type: string
           variable: arg1
-      height: 51
+      height: 52
       id: '1779271963764'
       position:
         x: 983
@@ -278,7 +278,7 @@ workflow:
       sourcePosition: right
       targetPosition: left
       type: custom
-      width: 241
+      width: 242
     - data:
         outputs:
         - value_selector:
@@ -301,9 +301,9 @@ workflow:
       sourcePosition: right
       targetPosition: left
       type: custom
-      width: 241
+      width: 242
     viewport:
-      x: 270.5
-      y: 82
-      zoom: 1
+      x: 96.42442779711178
+      y: 119.70526911418094
+      zoom: 0.6040447288021527
   rag_pipeline_variables: []
