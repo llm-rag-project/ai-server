@@ -10,7 +10,7 @@ dependencies:
 - current_identifier: null
   type: marketplace
   value:
-    marketplace_plugin_unique_identifier: langgenius/gemini:0.7.20@de0063a630a6d1b2c025fb84f3462ba5151fb60618309cd595c3f4711b1df847
+    marketplace_plugin_unique_identifier: langgenius/openrouter:0.0.54@fea0bb6f5208e9c654bd8114c93582760994a7406355512c3381bd8b723498b7
     version: null
 kind: app
 version: 0.6.0
@@ -148,7 +148,7 @@ workflow:
           required: true
           type: paragraph
           variable: content
-      height: 213
+      height: 212
       id: '1774624088980'
       position:
         x: 80
@@ -167,11 +167,10 @@ workflow:
           variable_selector: []
         model:
           completion_params:
-            max_output_tokens: 2000
             temperature: 0.3
           mode: chat
-          name: gemini-2.5-pro
-          provider: langgenius/gemini/google
+          name: google/gemini-3.1-flash-lite-preview
+          provider: langgenius/openrouter/openrouter
         prompt_template:
         - id: cafc76fc-d901-439c-8ef4-a9b7ae226906
           role: system
@@ -295,7 +294,7 @@ workflow:
       type: custom
       width: 242
     viewport:
-      x: -617.5785753061314
-      y: -47.49274294163297
-      zoom: 1.5874010519681994
+      x: 69.60186724866725
+      y: 162.49308256723938
+      zoom: 0.6569882261918408
   rag_pipeline_variables: []
