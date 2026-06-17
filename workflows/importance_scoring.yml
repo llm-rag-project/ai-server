@@ -10,7 +10,7 @@ dependencies:
 - current_identifier: null
   type: marketplace
   value:
-    marketplace_plugin_unique_identifier: langgenius/gemini:0.7.22@e9e5725768b1d79274bf5dee2052f4d99d736f104cc98dad57392c5b70412502
+    marketplace_plugin_unique_identifier: langgenius/openrouter:0.0.54@fea0bb6f5208e9c654bd8114c93582760994a7406355512c3381bd8b723498b7
     version: null
 kind: app
 version: 0.6.0
@@ -156,7 +156,7 @@ workflow:
           required: false
           type: text-input
           variable: feedback_history
-      height: 161
+      height: 160
       id: '1774507020143'
       position:
         x: 152.90237107350447
@@ -212,12 +212,12 @@ workflow:
       height: 52
       id: '1774524091887'
       position:
-        x: 1363.5594249525564
+        x: 1327.450311173352
         y: 311.39350165619766
       positionAbsolute:
-        x: 1363.5594249525564
+        x: 1327.450311173352
         y: 311.39350165619766
-      selected: true
+      selected: false
       sourcePosition: right
       targetPosition: left
       type: custom
@@ -235,10 +235,10 @@ workflow:
       height: 88
       id: '1774607960090'
       position:
-        x: 1717.1475211723805
+        x: 1633.8187970665244
         y: 311.39350165619766
       positionAbsolute:
-        x: 1717.1475211723805
+        x: 1633.8187970665244
         y: 311.39350165619766
       selected: false
       sourcePosition: right
@@ -253,8 +253,8 @@ workflow:
           completion_params:
             temperature: 0.3
           mode: chat
-          name: gemini-2.5-pro
-          provider: langgenius/gemini/google
+          name: google/gemini-3.1-flash-lite-preview
+          provider: langgenius/openrouter/openrouter
         prompt_template:
         - id: bd84d7ff-0925-4b10-ad86-a5c46050560f
           role: system
@@ -306,10 +306,10 @@ workflow:
       height: 88
       id: '1775742352885'
       position:
-        x: 728.8640592230349
+        x: 737.1969316336206
         y: 311.39350165619766
       positionAbsolute:
-        x: 728.8640592230349
+        x: 737.1969316336206
         y: 311.39350165619766
       selected: false
       sourcePosition: right
@@ -324,8 +324,8 @@ workflow:
           completion_params:
             temperature: 0.1
           mode: chat
-          name: gemini-2.5-pro
-          provider: langgenius/gemini/google
+          name: google/gemini-3.1-flash-lite-preview
+          provider: langgenius/openrouter/openrouter
         prompt_template:
         - id: 315eb913-a9ab-4bbd-a9c7-62c379c939be
           role: system
@@ -402,7 +402,7 @@ workflow:
       positionAbsolute:
         x: 1027.1555053940174
         y: 311.39350165619766
-      selected: false
+      selected: true
       sourcePosition: right
       targetPosition: left
       type: custom
@@ -461,7 +461,7 @@ workflow:
       type: custom
       width: 242
     viewport:
-      x: -24.509074770148118
-      y: -49.84032188906593
-      zoom: 1.2599210498948732
+      x: 116.46622184081514
+      y: 28.433235046994923
+      zoom: 0.6524043920693269
   rag_pipeline_variables: []
